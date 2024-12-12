@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% extends 'base.html' %}
+    {% load static %}
+</head>
+<body>
+
+    
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+<!----------------------------------------------------------------------------------------------------------------->
+
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="{% url 'index' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary"></i>Transfer Aeropuerto</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="col-lg-3 text-center text-lg-right">
+                <select class="form-select custom-select" id="country-select">
+                    <option value="">Seleccione un idioma...</option>
+                    <option value="EN">Inglés</option>
+                    <option value="ES">Español</option>
+                    <option value="FR">Francés</option>
+                    <option value="DE">Alemán</option>
+                    <option value="IT">Italiano</option>
+                    <option value="PT">Portugués</option>
+                </select>
+            </div>
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="index.html" class="nav-item nav-link">Inicio</a>
+                <a href="about.html" class="nav-item nav-link">Nosotros</a>
+                <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                <a href="admin.html" class="nav-item nav-link">Administrador</a>
+            </div>
+            <a href="reserva.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Reserva Ahora<i class="fa fa-arrow-right ms-3"></i></a>
+        </div>
+    </nav>
+
+<!----------------------------------------------------------------------------------------------------------------->
+{% block content %}
+    <div class="container-fluid bg-primary py-5 mb-5 page-header">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <h1 class="display-3 text-white animated slideInDown">Realiza tu Reserva Aquí</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Inicio</a></li>
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Nosotros</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Contacto</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!----------------------------------------------------------------------------------------------------------------->
+
+    {% if error_message %}
+    <div class="alert alert-danger">
+        {{ error_message }}
+    </div>
+    <a href="{% url 'reserva' %}">
+        <button type="button" class="btn btn-primary">Regresar</button>
+    </a>
+    {% else %}
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Registro de Reserva</h6>
+                <h1 class="mb-5">Completa los campos para tu Reserva</h1>
+            </div>
+
+            {% if cupos == 1 %}
+                <div id="formContainer" class="mt-4">
+                    <form method="POST" action="{% url 'datos' chofer.idChofer cupos zona horario %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut" name="rut" placeholder="Ingrese su rut">
+                        </div>
+                        <input type="hidden" name="horario" id="horario" value="{{ horario }}">
+                        <input type="hidden" name="cupos" id="cupos" value="{{ cupos }}">
+                        <button type="submit" class="btn btn-primary">Confirmar Datos</button>
+                    </form>
+                </div>
+            {% elif cupos == 2 %}
+                <div id="formContainer" class="mt-4">
+                    <form method="POST" action="{% url 'datos' chofer.idChofer cupos zona horario %}">
+                        {% csrf_token %}
+                        <h1>Pasajero</h1>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut" name="rut" placeholder="Ingrese su rut">
+                        </div>
+                        <input type="hidden" name="horario" id="horario" value="{{ horario }}">
+                        <input type="hidden" name="cupos" id="cupos" value="{{ cupos }}">
+                        <h1>Acompañante 1</h1>
+                        <div class="mb-3">
+                            <label for="name1" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name1" name="name1" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email1" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email1" name="email1" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut1" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut1" name="rut1" placeholder="Ingrese su rut">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Confirmar Datos</button>
+                    </form>
+                </div>
+            {% elif cupos == 3 %}
+                <div id="formContainer" class="mt-4">
+                    <form method="POST" action="{% url 'datos' chofer.idChofer cupos zona horario %}">
+                        {% csrf_token %}
+                        <h1>Pasajero</h1>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut" name="rut" placeholder="Ingrese su rut">
+                        </div>
+                        <input type="hidden" name="horario" id="horario" value="{{ horario }}">
+                        <input type="hidden" name="cupos" id="cupos" value="{{ cupos }}">
+                        <h1>Acompañante 1</h1>
+                        <div class="mb-3">
+                            <label for="name1" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name1" name="name1" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email1" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email1" name="email1" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut1" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut1" name="rut1" placeholder="Ingrese su rut">
+                        </div>
+                        <h1>Acompañante 2</h1>
+                        <div class="mb-3">
+                            <label for="name2" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name2" name="name2" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email2" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email2" name="email2" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut2" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut2" name="rut2" placeholder="Ingrese su rut">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Confirmar Datos</button>
+                    </form>
+                </div>
+
+            {% elif cupos == 4 %}
+                <div id="formContainer" class="mt-4">
+                    <form method="POST" action="{% url 'datos' chofer.idChofer cupos zona horario %}">
+                        {% csrf_token %}
+                        <h1>Pasajero</h1>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut" name="rut" placeholder="Ingrese su rut">
+                        </div>
+                        <input type="hidden" name="horario" id="horario" value="{{ horario }}">
+                        <input type="hidden" name="cupos" id="cupos" value="{{ cupos }}">
+                        <h1>Acompañante 1</h1>
+                        <div class="mb-3">
+                            <label for="name1" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name1" name="name1" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email1" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email1" name="email1" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut1" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut1" name="rut1" placeholder="Ingrese su rut">
+                        </div>
+                        <h1>Acompañante 2</h1>
+                        <div class="mb-3">
+                            <label for="name2" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name2" name="name2" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email2" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email2" name="email2" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut2" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut2" name="rut2" placeholder="Ingrese su rut">
+                        </div>
+                        <h1>Acompañante 3</h1>
+                        <div class="mb-3">
+                            <label for="name3" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name3" name="name3" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email3" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email3" name="email3" placeholder="Ingrese su correo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rut3" class="form-label">Rut</label>
+                            <input type="text" class="form-control" id="rut3" name="rut3" placeholder="Ingrese su rut">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Confirmar Datos</button>
+                    </form>
+                </div>
+
+            {% endif %}
+            
+            </div>
+        </div>
+    {% endif %}
+
+<!----------------------------------------------------------------------------------------------------------------->
+{% endblock %}
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-white mb-3">Accesos</h4>
+                    <a class="btn btn-link" href="">Nosotros</a>
+                    <a class="btn btn-link" href="">Contacto</a>
+                    <a class="btn btn-link" href="">Terminos y condiciones</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-white mb-3">Contact</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Aeropuerto Internacional Comodoro Arturo Merino Benítez, Santiago</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+56(2) 2345 6789</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>contacto@transferaeropuerto.cl</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">2024 TRANSFER AEROPUERTO</a>, Todos los derechos reservados..
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="">Inicio</a>
+                            <a href="">Nosotros</a>
+                            <a href="">Contacto</a>
+                            <a href="">Administrador</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</body>
+</html>
